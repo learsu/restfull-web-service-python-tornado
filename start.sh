@@ -3,7 +3,7 @@
 . /etc/profile
 #set listen line the same as you cpu core num
 listen_line=2
-listen_start=8889
+listen_start=8001
 
 CWD=`pwd`
 cd $CWD

@@ -28,21 +28,24 @@ INSERT INTO `test` (`id`, `name`, `pwd`) VALUES
 
 change model/table.py __init__ function to you mysql server information  
 
+sudo chmod -R 777 *  
+
 usage in ubuntu 13.04  
 
-sudo chmod -R 777 *  
 bash ./start.sh start //start tornado  
 bash ./start.sh stop //stop tornado  
 bash ./start.sh status //tornado status   
 bash ./start.sh restart //restart tornado  
 
-use start.sh or supervisor manage web service restart  
-
-main.port just notes tornado port  
-
+usage in centos
 centos please edit start.sh  
 /bin/bash => /bin/sh  
 bash ./start.sh start //start tornado  
 bash ./start.sh stop //stop tornado  
 bash ./start.sh status //tornado status   
 bash ./start.sh restart //restart tornado  
+
+
+use start.sh or supervisor manage web service restart  
+
+main.port just notes tornado port  

@@ -40,10 +40,10 @@ bash ./start.sh restart //restart tornado
 usage in centos
 centos please edit start.sh  
 /bin/bash => /bin/sh  
-bash ./start.sh start //start tornado  
-bash ./start.sh stop //stop tornado  
-bash ./start.sh status //tornado status   
-bash ./start.sh restart //restart tornado  
+sh ./start.sh start //start tornado  
+sh ./start.sh stop //stop tornado  
+sh ./start.sh status //tornado status   
+sh ./start.sh restart //restart tornado  
 
 use start.sh or supervisor manage web service restart  
 main.port just notes tornado port  

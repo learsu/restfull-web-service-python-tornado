@@ -41,7 +41,7 @@ use start.sh or supervisor manage web service restart
 main.port just notes tornado port
 
 centos please edit start.sh
-\#!/bin/bash => #!/bin/sh
+!/bin/bash => !/bin/sh
 bash ./start.sh start //start tornado  
 bash ./start.sh stop //stop tornado  
 bash ./start.sh status //tornado status   

@@ -45,7 +45,5 @@ bash ./start.sh stop //stop tornado
 bash ./start.sh status //tornado status   
 bash ./start.sh restart //restart tornado  
 
-
 use start.sh or supervisor manage web service restart  
-
 main.port just notes tornado port  

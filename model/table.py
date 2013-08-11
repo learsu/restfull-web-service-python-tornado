@@ -9,7 +9,8 @@ class Table():
 	_name = ''
 	_primary = ''
 	_dataValidate = {}
-
+	
+	
 	def get(self, id = 0):
 		'''retrieve only one record by primary key'''
 		sql = 'select * from ' + self._name + ' where ' + self._primary + " ='" + str(id) + "'"

@@ -34,17 +34,14 @@ class Application(tornado.web.Application):
 			(r"/test", TestListHandler),
 		]
 		self.db = torndb.Connection(
-            host=options.mysql_host, database=options.mysql_database,
-            user=options.mysql_user, password=options.mysql_password
-        )
+			host=options.mysql_host, database=options.mysql_database,
+			user=options.mysql_user, password=options.mysql_password
+		)
 		super(Application,self).__init__(handlers,**settings)
 
-def runserver():
+if __name__ == "__main__":
 	tornado.options.parse_command_line()
 	listen_port =  sys.argv[1]
 	http_server = tornado.httpserver.HTTPServer(Application())
 	http_server.listen(listen_port)
 	tornado.ioloop.IOLoop.instance().start()
-
-if __name__ == "__main__":
-	runserver()

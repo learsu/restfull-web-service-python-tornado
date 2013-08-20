@@ -50,4 +50,4 @@ sh ./start.sh restart //restart tornado
 use start.sh or supervisor manage web service restart  
 main.port just notes tornado port  
 
-说好了，拍砖随意但不能拍脸。
+说好了，拍砖随意但不能拍脸。联系方式直接喊一声吧。谢谢

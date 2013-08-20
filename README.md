@@ -1,6 +1,8 @@
 restfull-web-service-python-tornado
 =======
 
+this is test branch, just for test program
+
 use python tornado make restfull web service, include ORM, use python mysqldb
 
 you should install tornado-3.1 and python-mysqldb

@@ -32,20 +32,7 @@ change model/table.py __init__ function to you mysql server information
 
 sudo chmod -R 777 *  
 
-usage in ubuntu 13.04  
-
-bash ./start.sh start //start tornado  
-bash ./start.sh stop //stop tornado  
-bash ./start.sh status //tornado status   
-bash ./start.sh restart //restart tornado  
-
-usage in centos
-centos please edit start.sh  
-/bin/bash => /bin/sh  
-sh ./start.sh start //start tornado  
-sh ./start.sh stop //stop tornado  
-sh ./start.sh status //tornado status   
-sh ./start.sh restart //restart tornado  
+python server.py
 
 use start.sh or supervisor manage web service restart  
 main.port just notes tornado port  

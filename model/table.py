@@ -16,6 +16,58 @@ class Table():
 		sql = 'select * from ' + self._name + ' where ' + self._primary + " ='" + str(id) + "'"
 		return self.db.get(sql)
 
+	def dict(self, where = '', fields = [], order = '', limit = ''):
+		'''return dict'''
+		key = fields[0]
+		values = fields[1]
+		if not where:
+			where = ' where 1 = 1'
+		else:
+			where = ' where ' + where
+		field = '`' + key + "`, `" + values + '`'
+		if not order:
+			order = ''
+		else:
+			order = ' order by ' + order
+		if not limit:
+			limit = ' limit 200'
+		else:
+			limit = ' limit ' + limit
+		sql = 'select ' + field + ' from ' + self._name + where + order + limit
+		row = self.db.query(sql)
+		ret = {}
+		for value in row:
+			ret[value[key]] = value[values]
+
+		return ret
+
+	def join(self, joinItem = '', where = '', fields = [], order = '', limit = ''):
+		'''join joinItem key return list'''
+		if not where:
+			where = ' where 1 = 1'
+		else:
+			where = ' where ' + where
+		if fields :
+			field = '`' + "`, `" + join(fields) + '`'
+		else :
+			field = "*"
+		if not order:
+			order = ''
+		else:
+			order = ' order by ' + order
+		if not limit:
+			limit = ' limit 200'
+		else:
+			limit = ' limit ' + limit
+		sql = 'select ' + field + ' from ' + self._name + where + order + limit
+		row = self.db.query(sql)
+
+		ret = {}
+		for value in row:
+			ret[value[joinItem]] = value
+
+		return ret
+
 	def find(self, where = '', fields = [], order = '', limit = ''):
 		'''retrieve data from table by where clause'''
 		if not where:
@@ -23,7 +75,7 @@ class Table():
 		else:
 			where = ' where ' + where
 		if fields :
-			field = '`' + "`, `".join(fields) + '`'
+			field = '`' + "`, `" + join(fields) + '`'
 		else :
 			field = "*"
 		if not order:

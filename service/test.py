@@ -23,6 +23,25 @@ class TestGetHandler(tornado.web.RequestHandler):
 			#a = {'msg':e[0], 'code':e[1]}
 			#self.write(json.dumps(a)+"<br>")
 
+class TestJoinHandler(tornado.web.RequestHandler):
+	"""docstring for TestJoinHandler"""
+	def get(self, id):
+		try:
+			id = int(id) 
+		except ValueError:
+			id = 0
+		try:
+			test = Test(self.application.db)
+			b=test.join(joinItem = 'name', where = '`id` > 1', fields = [], order = '`id` asc', limit = '10')
+			self.write(str(b)+"<br>")
+			self.write(json.dumps(b)+"<br>")
+		except Exception, e:
+			#self.write(e[1].decode("utf8")+"<br>")
+			self.write(str(e)+"<br>")
+			#a = {'msg':e[0], 'code':e[1]}
+			#self.write(json.dumps(a)+"<br>")
+		
+
 class TestListHandler(tornado.web.RequestHandler):
 	def get(self):
 		try:

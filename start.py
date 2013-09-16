@@ -14,7 +14,7 @@ define("mysql_database", default="pay", help="database name")
 define("mysql_user", default="root", help="database user")
 define("mysql_password", default="123456", help="database password")
 
-from service.test import TestGetHandler, TestListHandler
+from service.test import TestGetHandler, TestListHandler, TestJoinHandler
 
 class MainHandler(tornado.web.RequestHandler):
 	"""docstring for MainHandler"""
@@ -32,6 +32,7 @@ class Application(tornado.web.Application):
 			(r"/", MainHandler),
 			(r"/testget/([0-9]+)", TestGetHandler),
 			(r"/test", TestListHandler),
+			(r"/testjoin/([0-9]+)", TestJoinHandler),
 		]
 		self.db = torndb.Connection(
 			host=options.mysql_host, database=options.mysql_database,

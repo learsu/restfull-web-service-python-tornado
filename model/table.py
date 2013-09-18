@@ -179,7 +179,7 @@ class Table():
 
 		return self.db.execute(sql)
 
-	def deld(self, id = 0):
+	def dele(self, id = 0):
 		if id == 0:
 			where = ' limit 1'
 		else:

@@ -68,7 +68,7 @@ class Table():
 
 		return ret
 
-	def find(self, where = '', fields = [], order = '', limit = ''):
+	def list(self, where = '', fields = [], order = '', limit = ''):
 		'''retrieve data from table by where clause'''
 		if not where:
 			where = ' where 1 = 1'
@@ -90,7 +90,7 @@ class Table():
 
 		return self.db.query(sql)
 
-	def fetch(self, where = '', fields = [], order = ''):
+	def find(self, where = '', fields = [], order = ''):
 		'''retrieve only one record by where clause'''
 		if not where:
 			where = ' where 1 = 1'

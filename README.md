@@ -1,4 +1,4 @@
-restfull-web-service-python-tornado
+restfull-web-service-python-tornado with out torndb
 =======
 
 use python tornado make restfull web service, include ORM, use python mysqldb

@@ -1,11 +1,12 @@
 #!/bin/env python
 #coding = utf-8
 
+import MySQLdb
+import json
 from validate import Validate
 
 class Table():
 	'''docstring for Table'''
-	db = None
 	_name = ''
 	_primary = ''
 	_dataValidate = {}
@@ -14,16 +15,57 @@ class Table():
 	def get(self, id = 0):
 		'''retrieve only one record by primary key'''
 		sql = 'select * from ' + self._name + ' where ' + self._primary + " ='" + str(id) + "'"
-		return self.db.get(sql)
 
-	def find(self, where = '', fields = [], order = '', limit = ''):
-		'''retrieve data from table by where clause'''
+		cursor = self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+
+		try:
+			cursor.execute(sql)
+			rows = cursor.fetchone()
+			return json.dumps(rows)
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			cursor.close()
+
+	def dict(self, where = '', fields = [], order = '', limit = ''):
+		'''return dict'''
+		key = fields[0]
+		values = fields[1]
+		if not where:
+			where = ' where 1 = 1'
+		else:
+			where = ' where ' + where
+		field = '`' + key + "`, `" + values + '`'
+		if not order:
+			order = ''
+		else:
+			order = ' order by ' + order
+		if not limit:
+			limit = ' limit 200'
+		else:
+			limit = ' limit ' + limit
+		sql = 'select ' + field + ' from ' + self._name + where + order + limit
+		
+		try:
+			self.cursor.execute(sql)
+			rows = self.cursor.fetchall()
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
+
+		ret = dict( [ (value[key], value[values]) for value in rows])
+
+		return json.dumps(ret)
+
+	def join(self, joinItem = '', where = '', fields = [], order = '', limit = ''):
+		'''join joinItem key return list'''
 		if not where:
 			where = ' where 1 = 1'
 		else:
 			where = ' where ' + where
 		if fields :
-			field = '`' + "`, `".join(fields) + '`'
+			field = '`' + "`, `" + join(fields) + '`'
 		else :
 			field = "*"
 		if not order:
@@ -36,9 +78,48 @@ class Table():
 			limit = ' limit ' + limit
 		sql = 'select ' + field + ' from ' + self._name + where + order + limit
 
-		return self.db.query(sql)
+		try:
+			self.cursor.execute(sql)
+			rows = self.cursor.fetchall()
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
-	def fetch(self, where = '', fields = [], order = ''):
+		ret = dict( [ (value[joinItem], value) for value in rows])
+
+		return json.dumps(ret)
+
+	def list(self, where = '', fields = [], order = '', limit = ''):
+		'''retrieve data from table by where clause'''
+		if not where:
+			where = ' where 1 = 1'
+		else:
+			where = ' where ' + where
+		if fields :
+			field = '`' + "`, `" + join(fields) + '`'
+		else :
+			field = "*"
+		if not order:
+			order = ''
+		else:
+			order = ' order by ' + order
+		if not limit:
+			limit = ' limit 200'
+		else:
+			limit = ' limit ' + limit
+		sql = 'select ' + field + ' from ' + self._name + where + order + limit
+
+		try:
+			self.cursor.execute(sql)
+			rows = self.cursor.fetchall()
+			return json.dumps(rows)
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
+
+	def find(self, where = '', fields = [], order = ''):
 		'''retrieve only one record by where clause'''
 		if not where:
 			where = ' where 1 = 1'
@@ -55,7 +136,14 @@ class Table():
 		limit = ' limit 1'
 		sql = 'select ' + field + ' from ' + self._name + where + order + limit
 
-		return self.db.get(sql)
+		try:
+			self.cursor.execute(sql)
+			rows = self.cursor.fetchone()
+			return json.dumps(rows)
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
 	def insert(self, data = {}):
 		'''add record'''
@@ -72,7 +160,13 @@ class Table():
 		values = values[:-2]
 		sql = 'insert into '+ self._name +' (' + fields + ') values (' + values + ')'
 
-		return self.db.execute_lastrowid(sql)
+		try:
+			self.cursor.execute(sql)
+			return self.cursor.lastrowid
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
 	def update(self, data = {}, where = "", flag = 0):
 		'''update record'''
@@ -94,14 +188,20 @@ class Table():
 			limit = ''
 		sql = 'update '+ self._name +' set ' + fields + where + limit
 
-		return self.db.execute(sql)
+		try:
+			self.cursor.execute(sql)
+			return self.cursor.rowcount
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
 	def save(self, data = {}, id = 0):
 		'''update record by primary'''
 		#check and validate data
 		validate = Validate()
 		validate._validate(data, self._dataValidate)
-		
+
 		fields = ''
 		for key,value in data.items():
 			fields = fields + "`" + key + "` = '" + value + "', "
@@ -112,7 +212,13 @@ class Table():
 			where = ' where ' + self._primary + " ='" + str(id) + "'"
 		sql = 'update '+ self._name +' set ' + fields + where
 
-		return self.db.execute(sql)
+		try:
+			self.cursor.execute(sql)
+			return self.cursor.rowcount
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
 	def delete(self, where = '', flag = 0):
 		if not where:
@@ -125,13 +231,25 @@ class Table():
 			limit = ''
 		sql = 'delete from '+ self._name + where + limit
 
-		return self.db.execute(sql)
+		try:
+			self.cursor.execute(sql)
+			return self.cursor.rowcount
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()
 
-	def deld(self, id = 0):
+	def dele(self, id = 0):
 		if id == 0:
 			where = ' limit 1'
 		else:
 			where = ' where ' + self._primary + " ='" + str(id) + "'"
 		sql = 'delete from '+ self._name + where
 
-		return self.db.execute(sql)
+		try:
+			self.cursor.execute(sql)
+			return self.cursor.rowcount
+		except MySQLdb.OperationalError, e:
+			raise Exception(e)
+		finally:
+			self.cursor.close()

@@ -7,13 +7,14 @@ from model.test import Test
 
 class TestGetHandler(tornado.web.RequestHandler):
 	"""docstring for TestGetHandler"""
+
 	def get(self, id):
 		try:
 			id = int(id) 
 		except ValueError:
 			id = 0
 		try:
-			test = Test(self.application.db)
+			test = Test(self.application.con)
 			b=test.get(id)
 			self.write(str(b)+"<br>")
 			self.write(json.dumps(b)+"<br>")
@@ -26,7 +27,9 @@ class TestGetHandler(tornado.web.RequestHandler):
 class TestListHandler(tornado.web.RequestHandler):
 	def get(self):
 		try:
-			test = Test(self.application.db)
+			self.application.cursor()
+			test = Test(self.application.con, self.application.cursor)
+
 			b=test.get(1)
 			self.write(str(b)+"<br>")
 			self.write(json.dumps(b)+"<br>")
@@ -42,7 +45,7 @@ class TestListHandler(tornado.web.RequestHandler):
 			self.write(json.dumps(b)+"<br>")
 			self.write("++++++++++++++++++++++++++++++find+++++++++++++++++++++++++++<br>")
 
-			b = test.fetch(where = '`id` > 1', fields = ['id', 'name'], order = '`id` desc')
+			b = test.find(where = '`id` > 1', fields = ['id', 'name'], order = '`id` desc')
 			self.write(str(b)+"<br>")
 			self.write(json.dumps(b)+"<br>")
 			self.write("++++++++++++++++++++++++++++++fetch+++++++++++++++++++++++++++<br>")

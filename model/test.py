@@ -6,7 +6,7 @@ from table import Table
 
 class Test(Table):
 	"""docstring for Test"""
-	db = None
+	con = None
 	_name = 'test'
 	_primary = 'id'
 	_dataValidate = {
@@ -19,9 +19,9 @@ class Test(Table):
 		},
 	}
 
-	def __init__(self, db):
+	def __init__(self, con):
 		'''connect to database'''
-		self.db = db
+		self.con = con
 
 	def commit(self):
 		try:

@@ -5,11 +5,12 @@ import sys
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-import torndb
+import MySQLdb
 
 from tornado.options import define,options
 
-define("mysql_host", default="127.0.0.1:3306", help="database host")
+define("mysql_host", default="127.0.0.1", help="database host")
+define("mysql_port", default=3306, help="database host")
 define("mysql_database", default="pay", help="database name")
 define("mysql_user", default="root", help="database user")
 define("mysql_password", default="123456", help="database password")
@@ -33,11 +34,17 @@ class Application(tornado.web.Application):
 			(r"/testget/([0-9]+)", TestGetHandler),
 			(r"/test", TestListHandler),
 		]
-		self.db = torndb.Connection(
-			host=options.mysql_host, database=options.mysql_database,
-			user=options.mysql_user, password=options.mysql_password
-		)
+		self.reconnect()
 		super(Application,self).__init__(handlers,**settings)
+
+	def reconnect(self):
+		try:
+			self.con = MySQLdb.connect(
+				host=options.mysql_host, user=options.mysql_user, port=options.mysql_port,
+				passwd=options.mysql_password, db=options.mysql_database
+			)
+		except MySQLdb.Error,e:
+			raise Exception('mysql connection error', 100)
 
 if __name__ == "__main__":
 	tornado.options.parse_command_line()

@@ -2,11 +2,13 @@
 #!/bin/env python
 #coding = utf-8
 
+import MySQLdb
 from table import Table
 
 class Test(Table):
 	"""docstring for Test"""
-	con = None
+	app = None
+	cursor = None
 	_name = 'test'
 	_primary = 'id'
 	_dataValidate = {
@@ -19,9 +21,9 @@ class Test(Table):
 		},
 	}
 
-	def __init__(self, con):
+	def __init__(self, app):
 		'''connect to database'''
-		self.con = con
+		self.app = app
 
 	def commit(self):
 		try:

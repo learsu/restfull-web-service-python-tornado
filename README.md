@@ -1,6 +1,8 @@
 restfull-web-service-python-tornado with out torndb
 =======
 
+sorry, this design is pass, i can`t keep mysql long connection and auto reconnection. Program can`t work, i am sorry.
+
 use python tornado make restfull web service, include ORM, use python mysqldb
 
 you should install tornado-3.1 and python-mysqldb
@@ -47,5 +49,7 @@ sh ./start.sh restart //restart tornado
 
 use start.sh or supervisor manage web service restart  
 main.port just notes tornado port  
+
+这个版本我没办法保持长链接和断开自动重链接。水平有限，非常抱歉。
 
 说好了，拍砖随意但不能拍脸。

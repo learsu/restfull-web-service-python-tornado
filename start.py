@@ -38,13 +38,17 @@ class Application(tornado.web.Application):
 		super(Application,self).__init__(handlers,**settings)
 
 	def reconnect(self):
+		self.con = MySQLdb.connect(
+			host=options.mysql_host, user=options.mysql_user, port=options.mysql_port,
+			passwd=options.mysql_password, db=options.mysql_database
+		)
+
+	def cursor(self):
 		try:
-			self.con = MySQLdb.connect(
-				host=options.mysql_host, user=options.mysql_user, port=options.mysql_port,
-				passwd=options.mysql_password, db=options.mysql_database
-			)
-		except MySQLdb.Error,e:
-			raise Exception('mysql connection error', 100)
+			return self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+		except MySQLdb.OperationalError, e:
+			self.reconnect()
+			return self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
 if __name__ == "__main__":
 	tornado.options.parse_command_line()

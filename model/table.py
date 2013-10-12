@@ -17,14 +17,14 @@ class Table():
 		sql = 'select * from ' + self._name + ' where ' + self._primary + " ='" + str(id) + "'"
 		
 		try:
-			cursor = self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-			cursor.execute(sql)
-			rows = cursor.fetchone()
+			self.cursor = self.app.cursor()
+			self.cursor.execute(sql)
+			rows = self.cursor.fetchone()
 			return json.dumps(rows)
 		except MySQLdb.OperationalError, e:
 			raise Exception(e)
 		finally:
-			cursor.close()
+			self.cursor.close()
 
 	def dict(self, where = '', fields = [], order = '', limit = ''):
 		'''return dict'''

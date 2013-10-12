@@ -14,7 +14,7 @@ class TestGetHandler(tornado.web.RequestHandler):
 		except ValueError:
 			id = 0
 		try:
-			test = Test(self.application.con)
+			test = Test(self.application)
 			b=test.get(id)
 			self.write(str(b)+"<br>")
 			self.write(json.dumps(b)+"<br>")

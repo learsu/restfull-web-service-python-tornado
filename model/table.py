@@ -34,13 +34,8 @@ class Table():
 		else:
 			limit = ' limit ' + limit
 		sql = 'select id, ' + field + ' from ' + self._name + where + order + limit
-		row = self.db.query(sql)
-		
-		#ret = {}
-		#for value in row:
-		#	ret[value[key]] = value[values]
-		ret = dict( [ (value[key], value[values]) for value in row])
-		print row
+		rows = self.db.query(sql)
+		ret = dict( [ (value[key], value[values]) for value in rows])
 		return ret
 
 	def join(self, joinItem = '', where = '', fields = [], order = '', limit = ''):
@@ -63,11 +58,6 @@ class Table():
 			limit = ' limit ' + limit
 		sql = 'select ' + field + ' from ' + self._name + where + order + limit
 		rows = self.db.query(sql)
-
-		#ret = {}
-		#for value in row:
-		#	ret[value[joinItem]] = value
-
 		ret = dict( [ (value[joinItem], value) for value in rows])
 
 		return ret

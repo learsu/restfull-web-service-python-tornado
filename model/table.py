@@ -15,10 +15,9 @@ class Table():
 	def get(self, id = 0):
 		'''retrieve only one record by primary key'''
 		sql = 'select * from ' + self._name + ' where ' + self._primary + " ='" + str(id) + "'"
-
-		cursor = self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-
+		
 		try:
+			cursor = self.con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 			cursor.execute(sql)
 			rows = cursor.fetchone()
 			return json.dumps(rows)

@@ -6,7 +6,6 @@ from table import Table
 
 class Test(Table):
 	"""docstring for Test"""
-	db = None
 	_name = 'test'
 	_primary = 'id'
 	_dataValidate = {

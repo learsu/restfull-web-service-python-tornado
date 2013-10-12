@@ -14,7 +14,9 @@ class TestGetHandler(tornado.web.RequestHandler):
 			id = 0
 		try:
 			test = Test(self.application.db)
-			b=test.get(id)
+			#b=test.get(id)
+			#b=test.dict(fields=['name', 'pwd'])
+			b=test.join(joinItem='id')
 			self.write(str(b)+"<br>")
 			self.write(json.dumps(b)+"<br>")
 		except Exception, e:

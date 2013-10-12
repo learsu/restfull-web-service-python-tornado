@@ -33,12 +33,14 @@ class Table():
 			limit = ' limit 200'
 		else:
 			limit = ' limit ' + limit
-		sql = 'select ' + field + ' from ' + self._name + where + order + limit
+		sql = 'select id, ' + field + ' from ' + self._name + where + order + limit
 		row = self.db.query(sql)
-		ret = {}
-		for value in row:
-			ret[value[key]] = value[values]
-
+		
+		#ret = {}
+		#for value in row:
+		#	ret[value[key]] = value[values]
+		ret = dict( [ (value[key], value[values]) for value in row])
+		print row
 		return ret
 
 	def join(self, joinItem = '', where = '', fields = [], order = '', limit = ''):
@@ -60,11 +62,13 @@ class Table():
 		else:
 			limit = ' limit ' + limit
 		sql = 'select ' + field + ' from ' + self._name + where + order + limit
-		row = self.db.query(sql)
+		rows = self.db.query(sql)
 
-		ret = {}
-		for value in row:
-			ret[value[joinItem]] = value
+		#ret = {}
+		#for value in row:
+		#	ret[value[joinItem]] = value
+
+		ret = dict( [ (value[joinItem], value) for value in rows])
 
 		return ret
 

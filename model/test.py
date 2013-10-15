@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
 #!/bin/env python
+#-*-coding:utf-8-*- 
 #coding = utf-8
 
 from table import Table

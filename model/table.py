@@ -1,4 +1,5 @@
 #!/bin/env python
+#-*-coding:utf-8-*- 
 #coding = utf-8
 
 from validate import Validate
@@ -140,7 +141,7 @@ class Table():
 			limit = ''
 		sql = 'update '+ self._name +' set ' + fields + where + limit
 
-		return self.db.execute(sql)
+		return self.db.execute_rowcount(sql)
 
 	def save(self, data = {}, id = 0):
 		'''update record by primary'''
@@ -158,7 +159,7 @@ class Table():
 			where = ' where ' + self._primary + " ='" + str(id) + "'"
 		sql = 'update '+ self._name +' set ' + fields + where
 
-		return self.db.execute(sql)
+		return self.db.execute_rowcount(sql)
 
 	def delete(self, where = '', flag = 0):
 		if not where:
@@ -171,7 +172,7 @@ class Table():
 			limit = ''
 		sql = 'delete from '+ self._name + where + limit
 
-		return self.db.execute(sql)
+		return self.db.execute_rowcount(sql)
 
 	def dele(self, id = 0):
 		if id == 0:
@@ -180,4 +181,4 @@ class Table():
 			where = ' where ' + self._primary + " ='" + str(id) + "'"
 		sql = 'delete from '+ self._name + where
 
-		return self.db.execute(sql)
+		return self.db.execute_rowcount(sql)

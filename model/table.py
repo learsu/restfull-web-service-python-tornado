@@ -46,7 +46,7 @@ class Table():
 		else:
 			where = ' where ' + where
 		if fields :
-			field = '`' + "`, `" + join(fields) + '`'
+			field = '`' + "`, `".join(fields) + "`, `" + joinItem + '`'
 		else :
 			field = "*"
 		if not order:
